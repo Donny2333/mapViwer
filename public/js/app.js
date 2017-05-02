@@ -13,5 +13,6 @@ angular.module('mapViewer', [
             url: url
         };
 
+        // TODO: query map url by ID
         console.log(Cookie.getCookie('ID'));
     }]);

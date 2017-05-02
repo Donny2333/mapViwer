@@ -1,6 +1,33 @@
-html, body {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
     height: 100%;
     width: 100%;
+}
+
+ul, li {
+    list-style: none;
+}
+
+.ol-control-layercontrol {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 6px 15px;
+    min-width: 120px;
+    background-color: rgba(0, 60, 136, .3);
+    border-radius: 5px;
+}
+
+.ol-control-layercontrol:hover {
+    background-color: rgba(0, 60, 136, .5);
+}
+
+.ol-layer-item > label {
+    padding-left: 5px;
+    color: white;
 }

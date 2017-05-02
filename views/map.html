@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="/bower_components/angular-openlayers/dist/angular-openlayers.css">
     <link rel="stylesheet" href="/css/style.css">
 
-    <script src="/bower_components/ol4/ol.js"></script>
+    <script src="/bower_components/ol4/ol-debug.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-openlayers/dist/angular-openlayers.js"></script>
     <script src="/lib/ImageArcGISRest.js"></script>
+    <script src="/lib/LayerControl.js"></script>
     <script src="/js/config.js"></script>
     <script src="/js/service.js"></script>
     <script src="/js/app.js"></script>
@@ -24,9 +25,9 @@
     </aol-view>
     <aol-control-zoomslider></aol-control-zoomslider>
     <aol-control-scaleline></aol-control-scaleline>
-    <aol-layer-image>
-        <aol-source-imagearcgisrest aol-url="vm.url">
-        </aol-source-imagearcgisrest>
+    <aol-control-layercontrol></aol-control-layercontrol>
+    <aol-layer-image aol-name="'china-layer'">
+        <aol-source-imagearcgisrest aol-url="vm.url"></aol-source-imagearcgisrest>
     </aol-layer-image>
 </aol-map>
 </body>
