@@ -2,20 +2,6 @@
  * Created by Donny on 17/5/2.
  */
 angular.module('mapViewer.service', [])
-    .factory('Cookie', function () {
-        return {
-            getCookie: function (name) {
-                var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-                if (arr = document.cookie.match(reg)) {
-                    return unescape(arr[2]);
-                }
-                else {
-                    return null;
-                }
-            }
-        }
-    })
-
     .factory('Http', ["$q", "$http", function ($q, $http) {
         return {
             get: function (url) {

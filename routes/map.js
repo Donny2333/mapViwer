@@ -7,8 +7,7 @@ var router = express.Router();
 /* GET map id. */
 router.get('/:id', function (req, res, next) {
     var id = req.params.id;
-    res.cookie('ID', id, {maxAge: 60 * 1000});
-    res.render('map');
+    res.render('map', {ID: id});
 });
 
 module.exports = router;

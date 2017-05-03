@@ -14,9 +14,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.11",
-    "angular-bootstrap": "^2.5.0",
+    "angular": "^1.6.0",
     "lodash": "^4.17.4",
-    "angular-openlayers": "^1.0.1"
+    "angular-openlayers": "Donny2333/angular-openlayers"
   }
 }

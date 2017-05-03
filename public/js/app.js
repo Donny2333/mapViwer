@@ -6,7 +6,7 @@ angular.module('mapViewer', [
     'mapViewer.config',
     'mapViewer.service'
 ])
-    .controller('AppController', ['$scope', 'Cookie', function ($scope, Cookie) {
+    .controller('AppController', ['$scope', 'Gallery', function ($scope, Gallery) {
         var url = "http://192.168.99.82:6080/arcgis/rest/services/MyMapService/MapServer";
 
         var vm = $scope.vm = {
@@ -14,5 +14,11 @@ angular.module('mapViewer', [
         };
 
         // TODO: query map url by ID
-        console.log(Cookie.getCookie('ID'));
+        var e = document.getElementById('vm.id');
+        console.log(e.value);
+        // Gallery.post({
+        //
+        // }).then(function (data) {
+        //
+        // })
     }]);

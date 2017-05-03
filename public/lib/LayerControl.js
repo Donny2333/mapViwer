@@ -51,7 +51,6 @@ ol.control.LayerControl.render = function (mapEvent) {
             var label = document.createElement('label');
             label.htmlFor = layerName[i];
             setInnerText(label, layerName[i]);
-            console.log(layers);
             li.appendChild(label);
             this.element.appendChild(li);
 
