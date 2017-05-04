@@ -18,17 +18,21 @@
 </head>
 <body ng-controller="AppController">
 <aol-map>
-    <aol-view aol-zoom="5">
-        <aol-coordinate aol-x="108" aol-y="38">
+    <aol-view aol-zoom="4">
+        <aol-coordinate aol-x="111" aol-y="32">
             <aol-projection aol-code="'EPSG:4326'"></aol-projection>
         </aol-coordinate>
     </aol-view>
     <aol-control-zoomslider></aol-control-zoomslider>
     <aol-control-scaleline></aol-control-scaleline>
+    <aol-control-mouseposition></aol-control-mouseposition>
     <aol-control-layercontrol></aol-control-layercontrol>
-    <aol-layer-image aol-name="'china-layer'">
+    <aol-layer-image aol-name="vm.name">
         <aol-source-imagearcgisrest aol-url="vm.url"></aol-source-imagearcgisrest>
     </aol-layer-image>
+    <!--<aol-layer-tile aol-name="'osm'">-->
+    <!--<aol-source-tilearcgisrest aol-url="vm.url1"></aol-source-tilearcgisrest>-->
+    <!--</aol-layer-tile>-->
 </aol-map>
 <input id="vm.id" type="text" value="<%= ID%>" style="visibility:hidden">
 </body>

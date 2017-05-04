@@ -24,7 +24,16 @@ ol.control.LayerControl = function (opt_options) {
 ol.inherits(ol.control.LayerControl, ol.control.Control);
 
 ol.control.LayerControl.render = function (mapEvent) {
-    if (!mapEvent.frameState) {
+    this.updateElement_(mapEvent.frameState);
+};
+
+ol.control.LayerControl.handleSourceChanged_ = function (event) {
+    event.preventDefault();
+    this.layerControlInitialized_ = false;
+};
+
+ol.control.LayerControl.prototype.updateElement_ = function (frameState) {
+    if (!frameState) {
         return;
     }
     if (!this.layerControlInitialized_) {
@@ -34,6 +43,7 @@ ol.control.LayerControl.render = function (mapEvent) {
             layerName = [],
             layerVisibility = [];
 
+        this.element.innerHTML = '';
         for (var i = 0; i < layers.getLength(); i++) {
             layer[i] = layers.item(i);
             layerName[i] = layer[i].get('name');
@@ -58,17 +68,23 @@ ol.control.LayerControl.render = function (mapEvent) {
                 checkbox.checked = true;
             }
             addChangeEvent(checkbox, layer[i]);
+            ol.events.listen(layer[i],
+                ol.Object.getChangeEventType('source'),
+                ol.control.LayerControl.handleSourceChanged_, this);
         }
 
         this.layerControlInitialized_ = true;
     }
 };
 
+ol.control.LayerControl.Property_ = {
+    SOURCE: 'source'
+};
+
 aol.models.controls.LayerControl = function () {
     aol.models.controls.Control.apply(this, arguments);
     this.attributes.className = undefined;
     this.callbacks['change:source'] = undefined;
-    this.callbacks['render'] = undefined;
 };
 
 aol.directives.ControlLayerControl = function () {

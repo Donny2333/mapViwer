@@ -1,33 +1,6 @@
 /**
  * Created by Donny on 17/5/2.
  */
-/**
- * Image source base model class.
- *
- * @class
- * @augments aol.models.Model
- * @property {(ol.Attribution[]|undefined)} attributes.attributions               - attributions.
- * @property {(ol.CanvasFunctionType|undefined)} attributes.canvasFunction        - canvas function.
- * @property {(string|olx.LogoOptions|undefined)} attributes.logo                 - logo.
- * @property {(ol.proj.ProjectionLike|undefined)} attributes.projection           - projection.
- * @property {(number|undefined)} attributes.ratio                                - canvas to viewport ratio.
- * @property {(number[]|undefined)} attributes.resolutions                        - list of resolutions.
- * @property {(ol.source.State|string|undefined)} attributes.state                -  state.
- */
-aol.models.sources.Image = function () {
-    aol.models.layers.Layer.apply(this, arguments);
-    this.attributes.source = undefined;
-    this.attributes.map = undefined;
-    this.attributes.preload = undefined;
-    this.attributes.useInterimTilesOnError = undefined;
-    this.callbacks['change:source'] = undefined;
-    this.callbacks['change:preload'] = undefined;
-    this.callbacks['change:useInterimTilesOnError'] = undefined;
-    this.callbacks['postcompose'] = undefined;
-    this.callbacks['precompose'] = undefined;
-    this.callbacks['propertychange'] = undefined;
-    this.callbacks['render'] = undefined;
-};
 
 /**
  * ImageArcGISRest source model class
@@ -39,10 +12,19 @@ aol.models.sources.Image = function () {
  * @property {(string[]|undefined)} attributes.urls                      - ArcGIS Rest service urls.
  */
 aol.models.sources.ImageArcGISRest = function () {
-    aol.models.sources.Image.apply(this, arguments);
+    aol.models.Model.apply(this, arguments);
     this.attributes.params = undefined;
     this.attributes.url = undefined;
-    this.attributes.urls = undefined;
+    this.watchers['url'] = function (newValue, oldValue, scope, instanceController, parentController) {
+        instanceController.getPromise().then(function (instance) {
+            instance.setUrl(newValue);
+        });
+
+        // dispatch event to layer that source has been changed.
+        parentController.getPromise().then(function (instance) {
+            instance.dispatchEvent('change:source');
+        });
+    }
 };
 
 /**
