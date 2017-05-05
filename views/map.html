@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/bower_components/angular-openlayers/dist/angular-openlayers.css">
     <link rel="stylesheet" href="/css/style.css">
 
+    <script src="/bower_components/lodash/dist/lodash.min.js"></script>
     <script src="/bower_components/ol4/ol-debug.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-openlayers/dist/angular-openlayers.js"></script>
@@ -17,23 +18,17 @@
     <script src="/js/app.js"></script>
 </head>
 <body ng-controller="AppController">
-<aol-map>
-    <aol-view aol-zoom="4">
-        <aol-coordinate aol-x="111" aol-y="32">
-            <aol-projection aol-code="'EPSG:4326'"></aol-projection>
-        </aol-coordinate>
-    </aol-view>
-    <aol-control-zoomslider></aol-control-zoomslider>
-    <aol-control-scaleline></aol-control-scaleline>
-    <aol-control-mouseposition></aol-control-mouseposition>
-    <aol-control-layercontrol></aol-control-layercontrol>
-    <aol-layer-image aol-name="vm.name">
-        <aol-source-imagearcgisrest aol-url="vm.url"></aol-source-imagearcgisrest>
-    </aol-layer-image>
-    <!--<aol-layer-tile aol-name="'osm'">-->
-    <!--<aol-source-tilearcgisrest aol-url="vm.url1"></aol-source-tilearcgisrest>-->
-    <!--</aol-layer-tile>-->
-</aol-map>
+<div id="map" class="map"></div>
+<ul class="ol-control-layercontrol">
+    <li class="ol-layer-item" ng-repeat="layer in vm.root">
+        <label>{{layer.name}}</label>
+        <ul class="ol-sublayers">
+            <li class="ol-sublayer-item" ng-repeat="sublayer in layer.subLayer">
+                <label>{{sublayer.name}}</label>
+            </li>
+        </ul>
+    </li>
+</ul>
 <input id="vm.id" type="text" value="<%= ID%>" style="visibility:hidden">
 </body>
 </html>

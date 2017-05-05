@@ -40,4 +40,32 @@ angular.module('mapViewer.service', [])
                 return Http.post(url, param);
             }
         }
+    }])
+
+    .factory('Map', ['Http', function (Http) {
+        return {
+            query: function () {
+                $.ajax({
+                    type: "get",
+                    url: encodeURI(obj.baseurl + "/" + queryindex + "/query"),
+                    data: {
+                        geometry: (xx - 0.00005) + "," + (yy - 0.00005) + ","
+                        + (xx + 0.00005) + "," + (yy + 0.00005),
+                        geometryType: "esriGeometryEnvelope",
+                        inSR: "4326",
+                        outSR: "4326",
+                        spatialRel: "esriSpatialRelIntersects",
+                        outFields: "*",
+                        where: where,
+                        returnGeometry: "true",
+                        f: "json"
+                    },
+                    dataType: "JSONP",
+                    success: function (data) {
+                        QueryOnLayerByXYCallback(data, xx, yy, mapindex, layerindex,
+                            isonly, mapCode);
+                    }
+                });
+            }
+        }
     }]);
