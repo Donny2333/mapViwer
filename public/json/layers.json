@@ -1,0 +1,73 @@
+{
+  "layers": [
+    {
+      "id": 0,
+      "name": "监控电子眼_group",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": [
+        1,
+        2
+      ],
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 1,
+      "name": "电子眼_s",
+      "parentLayerId": 0,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 20001
+    },
+    {
+      "id": 2,
+      "name": "电子眼_l",
+      "parentLayerId": 0,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 20000,
+      "maxScale": 0
+    },
+    {
+      "id": 3,
+      "name": "治安岗亭_group",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": [
+        4,
+        5
+      ],
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 4,
+      "name": "治安岗亭_s",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 80000
+    },
+    {
+      "id": 5,
+      "name": "治安岗亭_l",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 80000,
+      "maxScale": 0
+    },
+    {
+      "id": 6,
+      "name": "重大危险源",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 0
+    }
+  ]
+}

@@ -32,13 +32,16 @@ angular.module('mapViewer', [
                 pointer.map(function (node) {
                     node.subLayer = [];
 
-                    node.subLayerIds && node.subLayerIds.map(function (id, index) {
-                        node.subLayer.push(list[id]);
+                    if (!node.subLayerIds) {
+                    } else {
+                        node.subLayerIds.map(function (id, index) {
+                            node.subLayer.push(list[id]);
 
-                        if (list[id].subLayerIds) {
-                            stack.push([node.subLayer[index]]);
-                        }
-                    })
+                            if (list[id].subLayerIds) {
+                                stack.push([node.subLayer[index]]);
+                            }
+                        })
+                    }
                 })
             }
         }
@@ -70,6 +73,13 @@ angular.module('mapViewer', [
                 console.log(vm.root);
             }
         });
+
+        // $http.get('/json/layers.json').then(function (res) {
+        //     vm.list = res.data.layers;
+        //     createTree(vm.root, vm.list);
+        //     // vm.root = [vm.root];
+        //     console.log(vm.root);
+        // });
 
 
         // 3. create map

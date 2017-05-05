@@ -1,0 +1,6 @@
+<ul class="group">
+    <label class="ol-layer-item"><input type="checkbox"><span>{{layer.name}}</span></label>
+    <li ng-repeat="list in layer.subLayer"
+        ng-include="'/tpls/list.html'">
+    </li>
+</ul>

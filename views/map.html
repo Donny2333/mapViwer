@@ -19,16 +19,9 @@
 </head>
 <body ng-controller="AppController">
 <div id="map" class="map"></div>
-<ul class="ol-control-layercontrol">
-    <li class="ol-layer-item" ng-repeat="layer in vm.root">
-        <label>{{layer.name}}</label>
-        <ul class="ol-sublayers">
-            <li class="ol-sublayer-item" ng-repeat="sublayer in layer.subLayer">
-                <label>{{sublayer.name}}</label>
-            </li>
-        </ul>
-    </li>
-</ul>
+<div class="ol-control-layercontrol">
+    <div ng-repeat="list in vm.root" ng-include="'/tpls/list.html'"></div>
+</div>
 <input id="vm.id" type="text" value="<%= ID%>" style="visibility:hidden">
 </body>
 </html>

@@ -13,6 +13,11 @@ ul, li {
     list-style: none;
 }
 
+#map {
+    height: 100%;
+    width: 100%;
+}
+
 #map .ol-zoom .ol-zoom-out {
     margin-top: 204px;
 }
@@ -48,12 +53,20 @@ ul, li {
     min-width: 120px;
     background-color: rgba(0, 60, 136, .3);
     border-radius: 5px;
+    max-height: 400px;
+    overflow: scroll;
 }
 
 .ol-control-layercontrol:hover {
     background-color: rgba(0, 60, 136, .5);
 }
 
-.ol-layer-item > label {
+.ol-layer-item {
+    display: flex;
+    align-items: center;
     color: white;
+}
+
+.ol-layer-item > span {
+    margin-left: 10px;
 }
