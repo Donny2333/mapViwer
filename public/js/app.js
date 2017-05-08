@@ -12,7 +12,8 @@ angular.module('mapViewer', [
             list: [],
             setting: {
                 check: {
-                    enable: true
+                    enable: true,
+                    autoCheckTrigger: true
                 },
                 data: {
                     key: {
@@ -27,9 +28,16 @@ angular.module('mapViewer', [
                     }
                 },
                 callback: {
-                    onClick: function (event, treeId, treeNode, clickFlag) {
-                        console.log(treeNode);
-                    }
+                    onClick: null,
+                    onCheck: _.debounce(function (event, treeId, treeNode, clickFlag) {
+                        var treeObj = $.fn.zTree.getZTreeObj(treeId);
+                        var nodes = treeObj.getCheckedNodes();
+                        var layerId = _.join(_.map(nodes, 'id'), ',');
+
+                        initMap(url, {
+                            'LAYERS': layerId
+                        });
+                    }, 150)
                 }
             }
         };
@@ -45,37 +53,33 @@ angular.module('mapViewer', [
         var url3 = 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/';
 
         var url = url1;
-        var params = {
-            f: 'pjson'
-        };
 
         var extent = [12426884.777, 3812409.2678, 12433705.749, 3815674.2327];
         var pjson = {};
 
-        $http.get(ol.uri.appendParams(url, params)).then(function (res) {
-            if (res.status === 200 && res.data) {
-                pjson = res.data;
-                vm.list = pjson.layers;
-
-                console.log(vm.list);
-            }
+        loadMap(url, {
+            f: 'pjson'
         });
 
-        // $http.get('/json/layers.json').then(function (res) {
-        //     vm.list = res.data.layers;
-        //
-        //     console.log(vm.list);
-        // });
+        function loadMap(url, query) {
+            $http.get(ol.uri.appendParams(url, query || {})).then(function (res) {
+                if (res.status === 200 && res.data) {
+                    pjson = res.data;
+                    vm.list = pjson.layers;
+                    initMap(url);
+                }
+            });
+        }
 
 
         // 3. create map
         var layer = new ol.layer.Image({
-            source: new ol.source.ImageArcGISRest({
-                url: url,
-                params: {
-                    // 'LAYERS': '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33'
-                }
-            })
+            // source: new ol.source.ImageArcGISRest({
+            //     url: url,
+            //     params: {
+            //         'LAYERS': '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33'
+            //     }
+            // })
         });
 
         var map = new ol.Map({
@@ -88,6 +92,13 @@ angular.module('mapViewer', [
                 resolution: 96
             })
         });
+
+        function initMap(url, params) {
+            map.getLayers().item(0).setSource(new ol.source.ImageArcGISRest({
+                url: url,
+                params: params || {}
+            }));
+        }
 
         // remove Attribution control
         map.getControls().forEach(function (control) {
