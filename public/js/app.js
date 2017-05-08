@@ -41,7 +41,7 @@ angular.module('mapViewer', [
                         var layerId = _.join(_.map(nodes, 'id'), ',');
 
                         initMap(url, {
-                            'LAYERS': 'show:' + layerId
+                            'LAYERS': 'show:' + (layerId || -1)
                         });
                     }, 300)
                 }
@@ -121,7 +121,7 @@ angular.module('mapViewer', [
                 imageDisplay: _.union(map.getSize(), [map.getView().getResolution()]),
                 f: "json"
             }).then(function (res) {
-                if (res.status === 200 && res.data && res.data.results.length) {
+                if (res.status === 200 && res.data && res.data.results && res.data.results.length) {
                     vm.popup = res.data.results[0].attributes;
                     var html = "<div ng-include=\"'popup-content.html'\"></div>";
                     var complie = $compile(html);
