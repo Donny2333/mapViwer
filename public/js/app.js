@@ -81,13 +81,13 @@ angular.module('mapViewer', [
         var content = document.getElementById('popup-content');
         var closer = document.getElementById('popup-closer');
 
-        var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+        var overlay = new ol.Overlay({
             element: container,
             autoPan: true,
             autoPanAnimation: {
                 duration: 250
             }
-        }));
+        });
 
         closer.onclick = function () {
             overlay.setPosition(undefined);
@@ -96,14 +96,7 @@ angular.module('mapViewer', [
         };
 
         var map = new ol.Map({
-            layers: [new ol.layer.Image({
-                // source: new ol.source.ImageArcGISRest({
-                //     url: url,
-                //     params: {
-                //         'LAYERS': '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33'
-                //     }
-                // })
-            })],
+            layers: [new ol.layer.Image()],
             overlays: [overlay],
             target: 'map',
             view: new ol.View({
@@ -116,13 +109,10 @@ angular.module('mapViewer', [
 
         map.on('singleclick', function (evt) {
             var coordinate = evt.coordinate;
-            var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-                coordinate, 'EPSG:3857', 'EPSG:4326'));
-
             var x = coordinate[0];
             var y = coordinate[1];
 
-            Map.Identify(url, {
+            Map.identify(url, {
                 geometry: [x - .00005, y - .00005, x + .00005, y + .00005].join(','),
                 geometryType: "esriGeometryEnvelope",
                 tolerance: 10,

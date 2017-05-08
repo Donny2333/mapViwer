@@ -49,7 +49,7 @@ angular.module('mapViewer.service', [])
             load: function (url, query) {
                 return Http.get(ol.uri.appendParams(url, query || {}));
             },
-            Identify: function (url, query) {
+            identify: function (url, query) {
                 return Http.get(ol.uri.appendParams(url + '/identify', query || {}));
             }
         }
