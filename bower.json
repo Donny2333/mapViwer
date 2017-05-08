@@ -16,6 +16,8 @@
   "dependencies": {
     "angular": "^1.6.0",
     "lodash": "^4.17.4",
-    "angular-openlayers": "Donny2333/angular-openlayers"
+    "angular-openlayers": "Donny2333/angular-openlayers",
+    "ztree_v3": "^3.5.28",
+    "jquery": "^3.2.1"
   }
 }

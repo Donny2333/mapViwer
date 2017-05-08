@@ -14,8 +14,11 @@ ul, li {
 }
 
 #map {
+    position: fixed;
     height: 100%;
     width: 100%;
+    min-height: 100%;
+    min-width: 100%;
 }
 
 #map .ol-zoom .ol-zoom-out {
@@ -49,24 +52,25 @@ ul, li {
     position: absolute;
     top: 10px;
     right: 10px;
-    padding: 10px 15px;
+    padding: 5px;
     min-width: 120px;
     background-color: rgba(0, 60, 136, .3);
     border-radius: 5px;
     max-height: 400px;
-    overflow: scroll;
+    overflow-y: scroll;
+    /*overflow-y: hidden;*/
 }
 
 .ol-control-layercontrol:hover {
     background-color: rgba(0, 60, 136, .5);
 }
 
-.ol-layer-item {
-    display: flex;
-    align-items: center;
-    color: white;
-}
+/*.ol-layer-item {*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*color: white;*/
+/*}*/
 
-.ol-layer-item > span {
-    margin-left: 10px;
-}
+/*.ol-layer-item > span {*/
+    /*margin-left: 10px;*/
+/*}*/

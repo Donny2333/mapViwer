@@ -4,47 +4,35 @@
 angular.module('mapViewer', [
     aol.moduleName,
     'mapViewer.config',
-    'mapViewer.service'
+    'mapViewer.service',
+    'mapViewer.directive'
 ])
     .controller('AppController', ['$scope', '$timeout', '$http', 'Gallery', function ($scope, $timeout, $http, Gallery) {
         var vm = $scope.vm = {
-            root: [],
-            list: []
-        };
-
-        /**
-         * Create tree from the list
-         * @param {Array} root Root of the tree
-         * @param {Array} list Source data of the list
-         */
-        function createTree(root, list) {
-            list.map(function (item) {
-                if (item.parentLayerId === -1) {
-                    root.push(item);
-                }
-            });
-
-            var stack = [];
-            stack.push(root);
-            while (stack.length !== 0) {
-                var pointer = stack.pop();
-
-                pointer.map(function (node) {
-                    node.subLayer = [];
-
-                    if (!node.subLayerIds) {
-                    } else {
-                        node.subLayerIds.map(function (id, index) {
-                            node.subLayer.push(list[id]);
-
-                            if (list[id].subLayerIds) {
-                                stack.push([node.subLayer[index]]);
-                            }
-                        })
+            list: [],
+            setting: {
+                check: {
+                    enable: true
+                },
+                data: {
+                    key: {
+                        title: "name",
+                        checked: "defaultVisibility"
+                    },
+                    simpleData: {
+                        enable: true,
+                        idKey: "id",
+                        pIdKey: "parentLayerId",
+                        rootPId: -1
                     }
-                })
+                },
+                callback: {
+                    onClick: function (event, treeId, treeNode, clickFlag) {
+                        console.log(treeNode);
+                    }
+                }
             }
-        }
+        };
 
 
         // 1. query map url by ID
@@ -69,16 +57,14 @@ angular.module('mapViewer', [
                 pjson = res.data;
                 vm.list = pjson.layers;
 
-                createTree(vm.root, vm.list);
-                console.log(vm.root);
+                console.log(vm.list);
             }
         });
 
         // $http.get('/json/layers.json').then(function (res) {
         //     vm.list = res.data.layers;
-        //     createTree(vm.root, vm.list);
-        //     // vm.root = [vm.root];
-        //     console.log(vm.root);
+        //
+        //     console.log(vm.list);
         // });
 
 

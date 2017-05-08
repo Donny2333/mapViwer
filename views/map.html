@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>MapViwer</title>
+    <link rel="stylesheet" href="/bower_components/ztree_v3/css/zTreeStyle/zTreeStyle.css">
     <link rel="stylesheet" href="/bower_components/ol4/ol.css">
     <link rel="stylesheet" href="/bower_components/angular-openlayers/dist/angular-openlayers.css">
     <link rel="stylesheet" href="/css/style.css">
 
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/ztree_v3/js/jquery.ztree.all.min.js"></script>
     <script src="/bower_components/lodash/dist/lodash.min.js"></script>
     <script src="/bower_components/ol4/ol-debug.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
@@ -15,12 +18,14 @@
     <script src="/lib/LayerControl.js"></script>
     <script src="/js/config.js"></script>
     <script src="/js/service.js"></script>
+    <script src="/js/directive.js"></script>
     <script src="/js/app.js"></script>
 </head>
 <body ng-controller="AppController">
 <div id="map" class="map"></div>
 <div class="ol-control-layercontrol">
-    <div ng-repeat="list in vm.root" ng-include="'/tpls/list.html'"></div>
+    <!--<div ng-repeat="list in vm.root" ng-include="'/tpls/list.html'"></div>-->
+    <ul class="ztree" id="tree" z-nodes="vm.list" setting="vm.setting" z-tree></ul>
 </div>
 <input id="vm.id" type="text" value="<%= ID%>" style="visibility:hidden">
 </body>
