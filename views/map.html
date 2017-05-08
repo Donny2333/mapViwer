@@ -32,5 +32,14 @@
     <ul class="ztree" id="tree" z-nodes="vm.list" setting="vm.setting" z-tree></ul>
 </div>
 <input id="vm.id" type="text" value="<%= ID%>" style="visibility:hidden">
+
+<script type="text/ng-template" id="popup-content.html">
+    <ul>
+        <li ng-repeat='(key, value) in vm.popup'>
+            <span class='popup-key'>{{key}}</span>
+            <span class='popup-value'>{{value}}</span>
+        </li>
+    </ul>
+</script>
 </body>
 </html>
