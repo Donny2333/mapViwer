@@ -133,7 +133,7 @@ angular.module('mapViewer', [
             }).then(function (res) {
                 if (res.status === 200 && res.data && res.data.results.length) {
                     vm.popup = res.data.results[0].attributes;
-                    var html = "<ul><li ng-repeat='(key, value) in vm.popup'>{{key}}:{{value}}</li></ul>";
+                    var html = "<ul><li ng-repeat='(key, value) in vm.popup'><span class='popup-key'>{{key}}</span><span class='popup-value'>{{value}}</span></li></ul>";
                     var complie = $compile(html);
                     var $dom = complie($scope);
                     content.innerHTML = '';

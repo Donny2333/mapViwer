@@ -98,7 +98,8 @@ ul, li {
 
 .ol-popup {
     position: absolute;
-    background-color: white;
+    color: white;
+    background-color: #6699cc;
     -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
     filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
     padding: 15px;
@@ -120,7 +121,7 @@ ul, li {
 }
 
 .ol-popup:after {
-    border-top-color: white;
+    border-top-color: #6699cc;
     border-width: 10px;
     left: 48px;
     margin-left: -10px;
@@ -141,5 +142,23 @@ ul, li {
 }
 
 .ol-popup-closer:after {
+    color: white;
     content: "✖";
+}
+
+#popup-content > ul > li {
+    display: flex;
+
+}
+
+#popup-content > ul > li > span {
+    display: inline-block;
+}
+
+#popup-content > ul > li > span.popup-key {
+    width: 100px;
+}
+
+#popup-content > ul > li > span.popup-value {
+    overflow: hidden;
 }
