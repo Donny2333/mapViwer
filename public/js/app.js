@@ -7,7 +7,7 @@ angular.module('mapViewer', [
     'mapViewer.service',
     'mapViewer.directive'
 ])
-    .controller('AppController', ['$scope', '$timeout', '$http', 'Gallery', 'Map', function ($scope, $timeout, $http, Gallery, Map) {
+    .controller('AppController', ['$scope', '$timeout', '$http', '$compile', 'Gallery', 'Map', function ($scope, $timeout, $http, $compile, Gallery, Map) {
         var vm = $scope.vm = {
             list: [],
             setting: {
@@ -41,11 +41,12 @@ angular.module('mapViewer', [
                         var layerId = _.join(_.map(nodes, 'id'), ',');
 
                         initMap(url, {
-                            'LAYERS': 'show:' +  layerId
+                            'LAYERS': 'show:' + layerId
                         });
-                    }, 1000)
+                    }, 300)
                 }
-            }
+            },
+            popup: {}
         };
 
 
@@ -118,9 +119,28 @@ angular.module('mapViewer', [
             var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
                 coordinate, 'EPSG:3857', 'EPSG:4326'));
 
-            content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
-                '</code>';
-            overlay.setPosition(coordinate);
+            var x = coordinate[0];
+            var y = coordinate[1];
+
+            Map.Identify(url, {
+                geometry: [x - .00005, y - .00005, x + .00005, y + .00005].join(','),
+                geometryType: "esriGeometryEnvelope",
+                tolerance: 10,
+                sr: '3857',
+                mapExtent: map.getView().calculateExtent(),
+                imageDisplay: _.union(map.getSize(), [map.getView().getResolution()]),
+                f: "json"
+            }).then(function (res) {
+                if (res.status === 200 && res.data && res.data.results.length) {
+                    vm.popup = res.data.results[0].attributes;
+                    var html = "<ul><li ng-repeat='(key, value) in vm.popup'>{{key}}:{{value}}</li></ul>";
+                    var complie = $compile(html);
+                    var $dom = complie($scope);
+                    content.innerHTML = '';
+                    $dom.appendTo(content);
+                    overlay.setPosition(coordinate);
+                }
+            });
         });
 
         function initMap(url, params) {
