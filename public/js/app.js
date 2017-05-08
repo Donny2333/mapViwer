@@ -41,7 +41,7 @@ angular.module('mapViewer', [
                         var layerId = _.join(_.map(nodes, 'id'), ',');
 
                         initMap(url, {
-                            'LAYERS': layerId
+                            'LAYERS': 'show:' +  layerId
                         });
                     }, 1000)
                 }
@@ -76,6 +76,24 @@ angular.module('mapViewer', [
 
 
         // 3. create map
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+
+        var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        }));
+
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+
         var map = new ol.Map({
             layers: [new ol.layer.Image({
                 // source: new ol.source.ImageArcGISRest({
@@ -85,6 +103,7 @@ angular.module('mapViewer', [
                 //     }
                 // })
             })],
+            overlays: [overlay],
             target: 'map',
             view: new ol.View({
                 center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
@@ -92,6 +111,16 @@ angular.module('mapViewer', [
                 extent: extent,
                 resolution: 96
             })
+        });
+
+        map.on('singleclick', function (evt) {
+            var coordinate = evt.coordinate;
+            var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+                coordinate, 'EPSG:3857', 'EPSG:4326'));
+
+            content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
+                '</code>';
+            overlay.setPosition(coordinate);
         });
 
         function initMap(url, params) {
@@ -117,7 +146,6 @@ angular.module('mapViewer', [
             units: 'metric'
         });
         map.addControl(scaleLine);
-
 
         // Gallery.post({
         //     docID: '1',

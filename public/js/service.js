@@ -47,27 +47,28 @@ angular.module('mapViewer.service', [])
             load: function (url, query) {
                 return Http.get(ol.uri.appendParams(url, query || {}));
             },
-            query: function (url, query, where) {
-                $.ajax({
-                    type: "get",
-                    url: encodeURI(url + "/" + query + "/query"),
-                    data: {
-                        geometry: (xx - 0.00005) + "," + (yy - 0.00005) + ","
-                        + (xx + 0.00005) + "," + (yy + 0.00005),
-                        geometryType: "esriGeometryEnvelope",
-                        inSR: "4326",
-                        outSR: "4326",
-                        spatialRel: "esriSpatialRelIntersects",
-                        outFields: "*",
-                        where: where,
-                        returnGeometry: "true",
-                        f: "json"
-                    },
-                    success: function (data) {
-                        QueryOnLayerByXYCallback(data, xx, yy, mapindex, layerindex,
-                            isonly, mapCode);
-                    }
-                });
+            query: function (url, query) {
+                // $.ajax({
+                //     type: "get",
+                //     url: encodeURI(url + "/" + query + "/query"),
+                //     data: {
+                //         geometry: (xx - 0.00005) + "," + (yy - 0.00005) + ","
+                //         + (xx + 0.00005) + "," + (yy + 0.00005),
+                //         geometryType: "esriGeometryEnvelope",
+                //         inSR: "4326",
+                //         outSR: "4326",
+                //         spatialRel: "esriSpatialRelIntersects",
+                //         outFields: "*",
+                //         where: where,
+                //         returnGeometry: "true",
+                //         f: "json"
+                //     },
+                //     success: function (data) {
+                //         QueryOnLayerByXYCallback(data, xx, yy, mapindex, layerindex,
+                //             isonly, mapCode);
+                //     }
+                // });
+                return Http.get(ol.uri.appendParams(url, query || {}));
             }
         }
     }]);
