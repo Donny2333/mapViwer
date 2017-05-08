@@ -8,7 +8,7 @@ angular.module('mapViewer.service', [])
                 var deferred = $q.defer();
 
                 $http.get(url).then(function (res) {
-                    deferred.resolve(res.data);
+                    deferred.resolve(res);
                 }, function (err) {
                     deferred.reject(err);
                 });
@@ -19,7 +19,7 @@ angular.module('mapViewer.service', [])
                 var deferred = $q.defer();
 
                 $http.post(url, param).then(function (res) {
-                    deferred.resolve(res.data);
+                    deferred.resolve(res);
                 }, function (err) {
                     deferred.reject(err);
                 });
@@ -44,10 +44,13 @@ angular.module('mapViewer.service', [])
 
     .factory('Map', ['Http', function (Http) {
         return {
-            query: function () {
+            load: function (url, query) {
+                return Http.get(ol.uri.appendParams(url, query || {}));
+            },
+            query: function (url, query, where) {
                 $.ajax({
                     type: "get",
-                    url: encodeURI(obj.baseurl + "/" + queryindex + "/query"),
+                    url: encodeURI(url + "/" + query + "/query"),
                     data: {
                         geometry: (xx - 0.00005) + "," + (yy - 0.00005) + ","
                         + (xx + 0.00005) + "," + (yy + 0.00005),
@@ -60,7 +63,6 @@ angular.module('mapViewer.service', [])
                         returnGeometry: "true",
                         f: "json"
                     },
-                    dataType: "JSONP",
                     success: function (data) {
                         QueryOnLayerByXYCallback(data, xx, yy, mapindex, layerindex,
                             isonly, mapCode);

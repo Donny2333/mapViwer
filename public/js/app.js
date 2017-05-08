@@ -7,7 +7,7 @@ angular.module('mapViewer', [
     'mapViewer.service',
     'mapViewer.directive'
 ])
-    .controller('AppController', ['$scope', '$timeout', '$http', 'Gallery', function ($scope, $timeout, $http, Gallery) {
+    .controller('AppController', ['$scope', '$timeout', '$http', 'Gallery', 'Map', function ($scope, $timeout, $http, Gallery, Map) {
         var vm = $scope.vm = {
             list: [],
             setting: {
@@ -28,7 +28,13 @@ angular.module('mapViewer', [
                     }
                 },
                 callback: {
-                    onClick: null,
+                    onClick: function (treeNode, expandFlag, sonSign, focus, callbackFlag) {
+                        var treeObj = $.fn.zTree.getZTreeObj("tree");
+                        var nodes = treeObj.getSelectedNodes();
+                        if (nodes.length > 0) {
+                            treeObj.expandNode(nodes[0], true, false, true);
+                        }
+                    },
                     onCheck: _.debounce(function (event, treeId, treeNode, clickFlag) {
                         var treeObj = $.fn.zTree.getZTreeObj(treeId);
                         var nodes = treeObj.getCheckedNodes();
@@ -37,7 +43,7 @@ angular.module('mapViewer', [
                         initMap(url, {
                             'LAYERS': layerId
                         });
-                    }, 150)
+                    }, 1000)
                 }
             }
         };
@@ -57,33 +63,28 @@ angular.module('mapViewer', [
         var extent = [12426884.777, 3812409.2678, 12433705.749, 3815674.2327];
         var pjson = {};
 
-        loadMap(url, {
-            f: 'pjson'
-        });
 
-        function loadMap(url, query) {
-            $http.get(ol.uri.appendParams(url, query || {})).then(function (res) {
-                if (res.status === 200 && res.data) {
-                    pjson = res.data;
-                    vm.list = pjson.layers;
-                    initMap(url);
-                }
-            });
-        }
+        Map.load(url, {
+            f: 'pjson'
+        }).then(function (res) {
+            if (res.status === 200 && res.data) {
+                pjson = res.data;
+                vm.list = pjson.layers;
+                initMap(url);
+            }
+        });
 
 
         // 3. create map
-        var layer = new ol.layer.Image({
-            // source: new ol.source.ImageArcGISRest({
-            //     url: url,
-            //     params: {
-            //         'LAYERS': '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33'
-            //     }
-            // })
-        });
-
         var map = new ol.Map({
-            layers: [layer],
+            layers: [new ol.layer.Image({
+                // source: new ol.source.ImageArcGISRest({
+                //     url: url,
+                //     params: {
+                //         'LAYERS': '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33'
+                //     }
+                // })
+            })],
             target: 'map',
             view: new ol.View({
                 center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
@@ -117,14 +118,6 @@ angular.module('mapViewer', [
         });
         map.addControl(scaleLine);
 
-        // $http.get(url2 + '?f=pjson').then(function (res) {
-        //     vm.extent = [
-        //         res.data.fullExtent.xmin,
-        //         res.data.fullExtent.ymin,
-        //         res.data.fullExtent.xmax,
-        //         res.data.fullExtent.ymax
-        //     ];
-        // })
 
         // Gallery.post({
         //     docID: '1',
