@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font: 14px/1.5 "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+    font: 14px/1.5 "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif !important;
 }
 
 html, body {
@@ -107,6 +107,36 @@ ul, li {
     margin-left: -11px;
 }
 
+.popup-content-swiper {
+    position: absolute;
+    top: 50%;
+    margin: -10px 5px;
+    height: 0;
+    width: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    cursor: pointer;
+    content: '';
+}
+
+.popup-content-swiper-left {
+    left: 0;
+    border-right: 10px solid rgba(255, 255, 255, .3);
+}
+
+.popup-content-swiper-left:hover {
+    border-right: 10px solid rgba(255, 255, 255, 1);
+}
+
+.popup-content-swiper-right {
+    right: 0;
+    border-left: 10px solid rgba(255, 255, 255, .3);
+}
+
+.popup-content-swiper-right:hover {
+    border-left: 10px solid rgba(255, 255, 255, 1);
+}
+
 .ol-popup-closer {
     text-decoration: none;
     position: absolute;
@@ -115,12 +145,26 @@ ul, li {
 }
 
 .ol-popup-closer:after {
-    color: white;
+    color: rgba(255, 255, 255, .8);
     content: "✖";
+}
+
+.ol-popup-closer:hover:after {
+    color: rgba(255, 255, 255, 1);
+}
+
+#popup-content h2 {
+    text-align: center;
+    font-size: 18px !important;
+}
+
+#popup-content ul {
+    margin-top: 10px;
 }
 
 #popup-content ul > li {
     display: flex;
+    padding: 0 20px;
 }
 
 #popup-content ul > li > span {

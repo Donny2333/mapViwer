@@ -46,7 +46,11 @@ angular.module('mapViewer', [
                     }, 300)
                 }
             },
-            popup: {}
+            popup: {},
+            contents: {
+                id: 0,
+                data: []
+            }
         };
 
 
@@ -60,7 +64,6 @@ angular.module('mapViewer', [
         var url3 = 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/';
 
         var url = url1;
-
         var extent = [12426884.777, 3812409.2678, 12433705.749, 3815674.2327];
         var pjson = {};
 
@@ -89,10 +92,21 @@ angular.module('mapViewer', [
             }
         });
 
-        closer.onclick = function () {
+        $compile(container)($scope);
+
+        $scope.swipe = function (delta) {
+            console.log(delta);
+            return false;
+        };
+
+        $scope.close = function () {
             overlay.setPosition(undefined);
             closer.blur();
             return false;
+        };
+
+        $scope.swipeContent = function (delta) {
+            console.log(delta);
         };
 
         var map = new ol.Map({
@@ -122,12 +136,14 @@ angular.module('mapViewer', [
                 f: "json"
             }).then(function (res) {
                 if (res.status === 200 && res.data && res.data.results && res.data.results.length) {
-                    vm.popup = res.data.results[0].attributes;
+                    var contents = vm.contents.data = res.data.results;
+                    var id = vm.contents.id = 0;
+                    vm.popup.layerName = contents[id].layerName;
+                    vm.popup.attribute = contents[id].attributes;
+
                     var html = "<div ng-include=\"'popup-content.html'\"></div>";
-                    var complie = $compile(html);
-                    var $dom = complie($scope);
                     content.innerHTML = '';
-                    $dom.appendTo(content);
+                    $compile(html)($scope).appendTo(content);
                     overlay.setPosition(coordinate);
                 }
             });

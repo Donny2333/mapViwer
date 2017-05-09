@@ -24,8 +24,10 @@
 <body ng-controller="AppController">
 <div id="map" class="map">
     <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
+        <div id="swiper-left" class="popup-content-swiper popup-content-swiper-left" ng-click="swipe(-1)"></div>
+        <div id="swiper-right" class="popup-content-swiper popup-content-swiper-right" ng-click="swipe(1)"></div>
+        <a href="#" id="popup-closer" class="ol-popup-closer" ng-click="close()"></a>
     </div>
 </div>
 <div class="ol-control-layercontrol">
@@ -36,8 +38,9 @@
 <input id="vm.id" type="text" value="<%= ID%>" style="visibility:hidden">
 
 <script type="text/ng-template" id="popup-content.html">
+    <h2>{{vm.popup.layerName}}</h2>
     <ul>
-        <li ng-repeat='(key, value) in vm.popup'>
+        <li ng-repeat='(key, value) in vm.popup.attribute'>
             <span class='popup-key'>{{key}}</span>
             <span class='popup-value'>{{value}}</span>
         </li>
