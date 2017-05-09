@@ -95,7 +95,10 @@ angular.module('mapViewer', [
         $compile(container)($scope);
 
         $scope.swipe = function (delta) {
-            console.log(delta);
+            var contents = vm.contents.data;
+            var id = (vm.contents.id += delta);
+            vm.popup.layerName = contents[id].layerName;
+            vm.popup.attribute = contents[id].attributes;
             return false;
         };
 
@@ -103,10 +106,6 @@ angular.module('mapViewer', [
             overlay.setPosition(undefined);
             closer.blur();
             return false;
-        };
-
-        $scope.swipeContent = function (delta) {
-            console.log(delta);
         };
 
         var map = new ol.Map({
@@ -129,6 +128,7 @@ angular.module('mapViewer', [
             Map.identify(url, {
                 geometry: [x - .00005, y - .00005, x + .00005, y + .00005].join(','),
                 geometryType: "esriGeometryEnvelope",
+                layers: 'all',
                 tolerance: 10,
                 sr: '3857',
                 mapExtent: map.getView().calculateExtent(),

@@ -25,8 +25,10 @@
 <div id="map" class="map">
     <div id="popup" class="ol-popup">
         <div id="popup-content"></div>
-        <div id="swiper-left" class="popup-content-swiper popup-content-swiper-left" ng-click="swipe(-1)"></div>
-        <div id="swiper-right" class="popup-content-swiper popup-content-swiper-right" ng-click="swipe(1)"></div>
+        <div ng-show="vm.contents.id>0" class="popup-content-swiper popup-content-swiper-left"
+             ng-click="swipe(-1)"></div>
+        <div ng-show="vm.contents.id < vm.contents.data.length-1"
+             class="popup-content-swiper popup-content-swiper-right" ng-click="swipe(1)"></div>
         <a href="#" id="popup-closer" class="ol-popup-closer" ng-click="close()"></a>
     </div>
 </div>

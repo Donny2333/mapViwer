@@ -172,14 +172,19 @@ ul, li {
 }
 
 #popup-content ul > li > span.popup-key {
-    width: 100px;
+    min-width: 80px;
+    max-width: 100px;
+    /*width: auto;*/
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
 #popup-content ul > li > span.popup-value {
+    max-width: 150px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     flex: auto;
     padding-left: 10px;
 }
