@@ -55,7 +55,7 @@ angular.module('mapViewer', [
 
 
         // 1. query map url by ID
-        var id = document.getElementById('vm.id').value;
+        var url = document.getElementById('vm.url').value;
 
 
         // 2. get information of the map
@@ -63,7 +63,7 @@ angular.module('mapViewer', [
         var url2 = 'http://192.168.99.82:6080/arcgis/rest/services/MyMapService/MapServer';
         var url3 = 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/';
 
-        var url = url1;
+        // var url = url1;
         var extent = [12426884.777, 3812409.2678, 12433705.749, 3815674.2327];
         var pjson = {};
 
@@ -120,6 +120,8 @@ angular.module('mapViewer', [
             })
         });
 
+
+        // 4. add popup event and controls
         map.on('singleclick', function (evt) {
             var coordinate = evt.coordinate;
             var x = coordinate[0];
@@ -172,20 +174,4 @@ angular.module('mapViewer', [
             units: 'metric'
         });
         map.addControl(scaleLine);
-
-        // Gallery.post({
-        //     docID: '1',
-        //     pageNo: 0,
-        //     pageNum: 10
-        // }).then(function (data) {
-        //     vm.url2 = data.result[0].MapServerPath;
-        //     vm.name = data.result[0].Name;
-        //     vm.extent = [
-        //         data.result[0].Xmin,
-        //         data.result[0].Ymin,
-        //         data.result[0].Xmax,
-        //         data.result[0].Ymax
-        //     ];
-        //     console.log(vm);
-        // })
     }]);
