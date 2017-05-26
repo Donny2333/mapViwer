@@ -7,7 +7,7 @@ angular.module('mapViewer', [
     'mapViewer.service',
     'mapViewer.directive'
 ])
-    .controller('AppController', ['$scope', '$timeout', '$http', '$compile', 'Gallery', 'Map', function ($scope, $timeout, $http, $compile, Gallery, Map) {
+    .controller('AppController', ['$scope', '$timeout', '$http', '$compile', 'Gallery', 'Map', 'URL_CFG', function ($scope, $timeout, $http, $compile, Gallery, Map, URL_CFG) {
         var vm = $scope.vm = {
             list: [],
             setting: {
@@ -66,7 +66,7 @@ angular.module('mapViewer', [
 
 
         var id = _.last(_.split(window.location.pathname, '/'));
-        $http.post('http://172.30.1.246:9527/MapService.svc/GetMapDocList', {
+        $http.post(URL_CFG.api + 'GetMapDocList', {
             docID: id,
             pageNo: 0,
             pageNum: 10
