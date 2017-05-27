@@ -72,7 +72,6 @@ angular.module('mapViewer', [
             pageNum: 10
         }).then(function (res) {
             if (res.data.status === 'ok') {
-                console.log(res.data.result[0]);
                 url = res.data.result[0].MapServerPath;
                 Xmin = parseFloat(res.data.result[0].Xmin);
                 Ymin = parseFloat(res.data.result[0].Ymin);
@@ -110,7 +109,10 @@ angular.module('mapViewer', [
                     }
                 });
                 console.log(extent);
-
+                var projection = new ol.proj.Projection({
+                    code: 'EPSG:'+srcID,
+                    units: 'm'
+                });
                 var map = new ol.Map({
                     layers: [new ol.layer.Image()],
                     overlays: [overlay],
@@ -119,7 +121,7 @@ angular.module('mapViewer', [
                         center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
                         // zoom: 15,
                         extent: extent,
-                        projection: 'EPSG:' + srcID,
+                        projection: projection,
                         resolution: 96
                     })
                 });
