@@ -55,6 +55,7 @@ angular.module('mapViewer', [
 
 
         // 1. query map url by ID
+        var map = null;
         var url;
         var Xmin;
         var Ymin;
@@ -63,9 +64,15 @@ angular.module('mapViewer', [
         var srcID;
         var extent = [];
         var pjson = {};
-
-
         var id = _.last(_.split(window.location.pathname, '/'));
+
+        function initMap(url, params) {
+            map.getLayers().item(0).setSource(new ol.source.ImageArcGISRest({
+                url: url,
+                params: params || {}
+            }));
+        }
+
         $http.post(URL_CFG.api + 'GetMapDocList', {
             docID: id,
             pageNo: 0,
@@ -110,10 +117,10 @@ angular.module('mapViewer', [
                 });
                 console.log(extent);
                 var projection = new ol.proj.Projection({
-                    code: 'EPSG:'+srcID,
+                    code: 'EPSG:' + srcID,
                     units: 'm'
                 });
-                var map = new ol.Map({
+                map = new ol.Map({
                     layers: [new ol.layer.Image()],
                     overlays: [overlay],
                     target: 'map',
@@ -173,13 +180,6 @@ angular.module('mapViewer', [
                     });
                 });
 
-                function initMap(url, params) {
-                    map.getLayers().item(0).setSource(new ol.source.ImageArcGISRest({
-                        url: url,
-                        params: params || {}
-                    }));
-                }
-
                 // remove Attribution control
                 map.getControls().forEach(function (control) {
                     if (control instanceof ol.control.Attribution) {
@@ -196,7 +196,6 @@ angular.module('mapViewer', [
                     units: 'metric'
                 });
                 map.addControl(scaleLine);
-
             }
         });
     }]);
