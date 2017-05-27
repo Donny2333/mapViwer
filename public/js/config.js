@@ -4,16 +4,16 @@
 (function () {
     "use strict";
 
-    var prodURL = 'https://**.***.com/',
-        devURL = 'http://192.168.99.105:9527/',
+    var prodURL = 'http://192.168.99.105:9527/',
+        devURL = 'http://192.168.250.44:9527/',
         Urls = {
             Prod_Cfg: {
                 api: prodURL + 'MapService.svc/',
-                img: prodURL
+                img: 'http://192.168.99.105:9528/'
             },
             Dev_Cfg: {
                 api: devURL + 'MapService.svc/',
-                img: 'http://192.168.99.105:9528/'
+                img: 'http://192.168.250.44:9528/'
             }
         };
 

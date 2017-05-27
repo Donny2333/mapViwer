@@ -7,7 +7,7 @@ angular.module('mapViewer', [
     'mapViewer.service',
     'mapViewer.directive'
 ])
-    .controller('AppController', ['$scope', '$timeout', '$http', '$compile', 'Gallery', 'Map','URL_CFG', function ($scope, $timeout, $http, $compile, Gallery, Map,URL_CFG) {
+    .controller('AppController', ['$scope', '$timeout', '$http', '$compile', 'Gallery', 'Map', 'URL_CFG', function ($scope, $timeout, $http, $compile, Gallery, Map, URL_CFG) {
         var vm = $scope.vm = {
             list: [],
             setting: {
@@ -66,7 +66,7 @@ angular.module('mapViewer', [
 
 
         var id = _.last(_.split(window.location.pathname, '/'));
-        $http.post(URL_CFG.api+'GetMapDocList', {
+        $http.post(URL_CFG.api + 'GetMapDocList', {
             docID: id,
             pageNo: 0,
             pageNum: 10
@@ -79,7 +79,6 @@ angular.module('mapViewer', [
                 Ymax = parseFloat(res.data.result[0].Ymax);
                 extent = [Xmin, Ymin, Xmax, Ymax];
                 srcID = res.data.result[0].SrcID;
-                //initMap(url);
                 Map.load(url, {
                     f: 'pjson'
                 }).then(function (res) {
@@ -175,37 +174,10 @@ angular.module('mapViewer', [
                 });
 
                 function initMap(url, params) {
-                    console.log("wxl");
-                    console.log(url);
-                    console.log((extent[0] + extent[2]) / 2);
-                    console.log((extent[1] + extent[3]) / 2);
                     map.getLayers().item(0).setSource(new ol.source.ImageArcGISRest({
                         url: url,
                         params: params || {}
                     }));
-                    // var layers = [
-                    //     // new ol.layer.Tile({
-                    //     //     source: new ol.source.OSM()
-                    //     // }),
-                    //     new ol.layer.Image({
-                    //         source: new ol.source.ImageArcGISRest({
-                    //           //  ratio: 1,
-                    //             params: {},
-                    //             url: url
-                    //         })
-                    //     })
-                    // ];
-
-                    // var map = new ol.Map({
-                    //     layers: layers,
-                    //     target: 'map',
-                    //     view: new ol.View({
-                    //         center:[(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
-                    //          projection: projection ,
-                    //         //center:ol.proj.transform([(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2], 'EPSG:4546', 'EPSG:3857'),
-                    //         resolution: 96
-                    //     })
-                    // });
                 }
 
                 // remove Attribution control
