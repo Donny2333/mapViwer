@@ -63,8 +63,6 @@ angular.module('mapViewer', [
         var srcID;
         var extent = [];
         var pjson = {};
-
-
         var id = _.last(_.split(window.location.pathname, '/'));
         $http.post(URL_CFG.api + 'GetMapDocList', {
             docID: id,
@@ -72,7 +70,6 @@ angular.module('mapViewer', [
             pageNum: 10
         }).then(function (res) {
             if (res.data.status === 'ok') {
-                console.log(res.data.result[0]);
                 url = res.data.result[0].MapServerPath;
                 Xmin = parseFloat(res.data.result[0].Xmin);
                 Ymin = parseFloat(res.data.result[0].Ymin);
@@ -202,7 +199,6 @@ angular.module('mapViewer', [
                     units: 'metric'
                 });
                 map.addControl(scaleLine);
-
             }
         });
     }]);
