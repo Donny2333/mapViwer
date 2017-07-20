@@ -119,10 +119,18 @@ angular.module('mapViewer', [
                         center: [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
                         // zoom: 15,
                         extent: extent,
-                        projection: 'EPSG:' + srcID,
-                        resolution: 96
+                        projection: new ol.proj.Projection({
+                            code: 'EPSG:' + srcID,
+                            // 简单区分坐标系
+                            units: extent[0] < 150 && extent[0] > 50 ? 'degrees' : 'm'
+                        })
                     })
                 });
+
+                // set map's resolution
+                var size = map.getSize();
+                var resolution = (extent[3] - extent[1]) / size[1];
+                map.getView().setResolution(resolution);
 
                 $compile(container)($scope);
 
@@ -152,7 +160,7 @@ angular.module('mapViewer', [
                         geometryType: "esriGeometryEnvelope",
                         layers: 'all',
                         tolerance: 10,
-                        sr: '3857',
+                        sr: srcID,
                         mapExtent: map.getView().calculateExtent(),
                         imageDisplay: _.union(map.getSize(), [map.getView().getResolution()]),
                         f: "json"
