@@ -8,6 +8,16 @@ angular.module('mapViewer', [
     'mapViewer.directive'
 ])
     .controller('AppController', ['$scope', '$timeout', '$http', '$compile', 'Gallery', 'Map', 'URL_CFG', function ($scope, $timeout, $http, $compile, Gallery, Map, URL_CFG) {
+        var map = null;
+        var url;
+        var Xmin;
+        var Ymin;
+        var Xmax;
+        var Ymax;
+        var srcID;
+        var extent = [];
+        var pjson = {};
+        var id = _.last(_.split(window.location.pathname, '/'));
         var vm = $scope.vm = {
             list: [],
             setting: {
@@ -53,52 +63,26 @@ angular.module('mapViewer', [
             }
         };
 
+        function initMap(url, params) {
+            map.getLayers().item(0).setSource(new ol.source.ImageArcGISRest({
+                url: url,
+                params: params || {}
+            }));
+        }
+
 
         // 1. query map url by ID
-        var url;
-        var Xmin;
-        var Ymin;
-        var Xmax;
-        var Ymax;
-        var srcID;
-        var extent = [];
-        var pjson = {};
-        var id = _.last(_.split(window.location.pathname, '/'));
         $http.post(URL_CFG.api + 'GetMapDocList', {
             docID: id,
             pageNo: 0,
             pageNum: 10
         }).then(function (res) {
             if (res.data.status === 'ok') {
-                url = res.data.result[0].MapServerPath;
-                Xmin = parseFloat(res.data.result[0].Xmin);
-                Ymin = parseFloat(res.data.result[0].Ymin);
-                Xmax = parseFloat(res.data.result[0].Xmax);
-                Ymax = parseFloat(res.data.result[0].Ymax);
-                extent = [Xmin, Ymin, Xmax, Ymax];
-                srcID = res.data.result[0].SrcID;
-                Map.load(url, {
-                    f: 'pjson'
-                }).then(function (res) {
-                    if (res.status === 200 && res.data) {
-                        pjson = res.data;
-                        vm.list = pjson.layers;
-                        initMap(url);
-                    }
-                });
-
 
                 // 2. get information of the map
-                var url1 = 'http://192.168.100.5:6080/arcgis/rest/services/IndustryMaps2/01_aqssfbt/MapServer';
-                var url2 = 'http://192.168.99.82:6080/arcgis/rest/services/MyMapService/MapServer';
-                var url3 = 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/';
-
-
-                // 3. create map
                 var container = document.getElementById('popup');
                 var content = document.getElementById('popup-content');
                 var closer = document.getElementById('popup-closer');
-
                 var overlay = new ol.Overlay({
                     element: container,
                     autoPan: true,
@@ -106,9 +90,16 @@ angular.module('mapViewer', [
                         duration: 250
                     }
                 });
-                console.log(extent);
+                url = res.data.result[0].MapServerPath;
+                Xmin = parseFloat(res.data.result[0].Xmin);
+                Ymin = parseFloat(res.data.result[0].Ymin);
+                Xmax = parseFloat(res.data.result[0].Xmax);
+                Ymax = parseFloat(res.data.result[0].Ymax);
+                extent = [Xmin, Ymin, Xmax, Ymax];
+                srcID = res.data.result[0].SrcID;
 
-                var map = new ol.Map({
+                // 3. create the map
+                map = new ol.Map({
                     layers: [new ol.layer.Image()],
                     overlays: [overlay],
                     target: 'map',
@@ -118,7 +109,7 @@ angular.module('mapViewer', [
                         extent: extent,
                         projection: new ol.proj.Projection({
                             code: 'EPSG:' + srcID,
-                            // 简单区分坐标系
+                            // set projection's units
                             units: extent[0] < 150 && extent[0] > 50 ? 'degrees' : 'm'
                         })
                     })
@@ -129,6 +120,17 @@ angular.module('mapViewer', [
                 var resolution = (extent[3] - extent[1]) / size[1];
                 map.getView().setResolution(resolution);
 
+                Map.load(url, {
+                    f: 'pjson'
+                }).then(function (res) {
+                    if (res.status === 200 && res.data) {
+                        pjson = res.data;
+                        vm.list = pjson.layers;
+                        initMap(url);
+                    }
+                });
+
+                // 4. add popup event and other controls
                 $compile(container)($scope);
 
                 $scope.swipe = function (delta) {
@@ -145,8 +147,6 @@ angular.module('mapViewer', [
                     return false;
                 };
 
-
-                // 4. add popup event and controls
                 map.on('singleclick', function (evt) {
                     var coordinate = evt.coordinate;
                     var x = coordinate[0];
@@ -176,13 +176,6 @@ angular.module('mapViewer', [
                     });
                 });
 
-                function initMap(url, params) {
-                    map.getLayers().item(0).setSource(new ol.source.ImageArcGISRest({
-                        url: url,
-                        params: params || {}
-                    }));
-                }
-
                 // remove Attribution control
                 map.getControls().forEach(function (control) {
                     if (control instanceof ol.control.Attribution) {
@@ -196,7 +189,7 @@ angular.module('mapViewer', [
 
                 // add scaleLine control
                 var scaleLine = new ol.control.ScaleLine({
-                    units: 'metric'
+                    units: extent[0] < 150 && extent[0] > 50 ? 'degrees' : 'metric'
                 });
                 map.addControl(scaleLine);
             }
